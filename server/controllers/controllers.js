@@ -71,19 +71,9 @@ exports.resetPassword = async (req, res) => {
         }
       );
 
-      let pass = await User.findOne({ where: { id: req.body.id } });
+      pass = await User.findOne({ where: { id: req.body.id } });
 
-      // .then((num) => {
-      //   if (num == 1) {
-      // res.send({ message: "updated" });
-      // }
-      // })
-      // .catch((err) => {
-      //   res.status(500).send({
-      //     message: "Could not delete Tutorial with id=" + id,
-      //   });
-      // });
-      return res.status(200).json({ pass, message: "update successful" });
+      return res.status(200).json({ pass, message: "updated successfully" });
     } else {
       return res.status(404).json({ message: "old password not match" });
     }
@@ -92,4 +82,23 @@ exports.resetPassword = async (req, res) => {
       message: "Some error occurred while updating user.",
     });
   }
+};
+
+exports.forgotPassword = async (req, res) => {
+  try {
+    let user = await User.findOne({ where: { id: req.body.id } });
+    console.log(user);
+
+    const { username } = user;
+
+    if (username !== req.body.username) {
+      return res.status(404).json({ message: "user not register" });
+    } else if (user) {
+      const link = `http://localhost:3000/reset-password/${user.id}`;
+      console.log(link);
+      return res
+        .status(200)
+        .json({ message: "password reset link has been sent" });
+    }
+  } catch (err) {}
 };

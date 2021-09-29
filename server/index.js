@@ -24,6 +24,13 @@ app.get("/", (req, res) => {
     console.log(err);
   }
 });
+app.get("/reset-password/:id", (req, res) => {
+  try {
+    res.send("reset your password here");
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 app.listen(3000, () => {
   console.log("server is running on port 3000 ");
