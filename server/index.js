@@ -3,6 +3,8 @@ const cors = require("cors");
 const app = express();
 
 const db = require("./models/index");
+const { setup } = require("./routes/index");
+
 db.sequelize.sync();
 
 // db.sequelize.sync({ force: true }).then(() => {
@@ -15,7 +17,8 @@ var corsoptions = {
 app.use(cors(corsoptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-require("./routes/routes")(app);
+// require("./routes/routes")(app);
+setup(app);
 
 app.get("/", (req, res) => {
   try {

@@ -1,3 +1,5 @@
+const { getJWTToken } = require("../helper/jwt");
+const { mail } = require("../helper/nodemailer");
 const db = require("../models");
 const User = db.users;
 const Op = db.Sequelize.Op;
@@ -29,6 +31,7 @@ exports.findAll = (req, res) => {
     ? { first_name: { [Op.iLike]: `%${first_name}%` } }
     : null;
 
+  console.log("====res");
   User.findAll({ where: condition })
     .then((data) => {
       res.send(data);
@@ -47,7 +50,11 @@ exports.login = async (req, res) => {
     });
     console.log("=====data", data);
     if (data) {
-      return res.status(200).json({ data: data, message: "login successful" });
+      const token = getJWTToken({ id: data.id, username: req.body.username });
+      console.log("======= token", token);
+      return res
+        .status(200)
+        .json({ data: data, token: token, message: "login successful" });
     } else {
       return res.status(404).json({ message: "username or password wrong" });
     }
@@ -73,7 +80,9 @@ exports.resetPassword = async (req, res) => {
 
       pass = await User.findOne({ where: { id: req.body.id } });
 
-      return res.status(200).json({ pass, message: "updated successfully" });
+      return res
+        .status(200)
+        .json({ data: pass, message: "updated successfully" });
     } else {
       return res.status(404).json({ message: "old password not match" });
     }
@@ -96,6 +105,7 @@ exports.forgotPassword = async (req, res) => {
     } else if (user) {
       const link = `http://localhost:3000/reset-password/${user.id}`;
       console.log(link);
+      await mail("infoqadribags@gmail.com", "pass", link);
       return res
         .status(200)
         .json({ message: "password reset link has been sent" });
