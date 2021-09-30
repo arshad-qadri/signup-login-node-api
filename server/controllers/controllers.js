@@ -1,3 +1,4 @@
+// const { where } = require("sequelize/types");
 const { getJWTToken } = require("../helper/jwt");
 const { mail } = require("../helper/nodemailer");
 const db = require("../models");
@@ -16,7 +17,7 @@ exports.create = (req, res) => {
   };
   User.create(user)
     .then((data) => {
-      res.send(data);
+      res.send({ data: data, message: "Account created successfully." });
     })
     .catch((err) => {
       res.status(5000).send({
@@ -50,7 +51,10 @@ exports.login = async (req, res) => {
     });
     console.log("=====data", data);
     if (data) {
-      const token = getJWTToken({ id: data.id, username: req.body.username });
+      const tokens = getJWTToken({ id: data.id, username: req.body.username });
+
+      const token = tokens.replace("Bearer", "");
+
       console.log("======= token", token);
       return res
         .status(200)
@@ -99,16 +103,39 @@ exports.forgotPassword = async (req, res) => {
     console.log(user);
 
     const { username } = user;
+    const token = getJWTToken({ id: user.id, username: user.username });
 
     if (username !== req.body.username) {
       return res.status(404).json({ message: "user not register" });
     } else if (user) {
-      const link = `http://localhost:3000/reset-password/${user.id}`;
+      const link = `http://localhost:3000/forgot-password?id=${user.id}token=${token}`;
       console.log(link);
-      await mail("infoqadribags@gmail.com", "pass", link);
+      mail("infoqadribags@gmail.com", "pass", link);
       return res
         .status(200)
         .json({ message: "password reset link has been sent" });
     }
-  } catch (err) {}
+  } catch (err) {
+    res.status(500).send({ message: err || "some error occured" });
+  }
+};
+
+exports.changePassword = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    if (!req.body.newPassword && !req.body.reEnterPassword) {
+      res.status(401).send({ message: "field cannot be empty" });
+    } else if (req.body.newPassword === req.body.reEnterPassword) {
+      await User.update(
+        { passwords: req.body.newPassword },
+        { where: { id: id } }
+      );
+      res.send({ message: "Password changed successfully." });
+    } else {
+      res.status(404).send({ message: "Password not match" });
+    }
+  } catch (error) {
+    res.status(500).send({ message: error || "Some error occured" });
+  }
 };

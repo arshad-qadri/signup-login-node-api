@@ -6,5 +6,6 @@ router.post("/create", Users.create);
 router.post("/login", Users.login);
 router.put("/resetPassword", Users.resetPassword);
 router.post("/forgotPassword", Users.forgotPassword);
+router.post("/change-password/:id", Users.changePassword);
 
 module.exports = router;

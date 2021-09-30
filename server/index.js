@@ -12,7 +12,7 @@ db.sequelize.sync();
 // });
 
 var corsoptions = {
-  origin: "http://localhost:3000",
+  origin: "http://localhost:3001",
 };
 app.use(cors(corsoptions));
 app.use(express.json());

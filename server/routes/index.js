@@ -13,6 +13,7 @@ exports.setup = (app) => {
         "/api/user/create",
         "/api/user/resetPassword",
         "/api/user/forgotPassword",
+        "/api/user/change-password/:id",
       ],
     })
   );
