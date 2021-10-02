@@ -1,5 +1,7 @@
 import { Route, Switch } from "react-router-dom";
 import "./App.css";
+import ChangePasswod from "./components/ChangePasswod";
+import ForgotPassword from "./components/ForgotPassword";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import ResetPassword from "./components/ResetPassword";
@@ -13,6 +15,8 @@ function App() {
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/resetpassword" component={ResetPassword} />
+        <Route path="/forgot-password" component={ForgotPassword} />
+        <Route path="/change-password/:id/:token" component={ChangePasswod} />
       </Switch>
     </div>
   );

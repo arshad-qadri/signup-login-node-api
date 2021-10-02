@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const loginData = {
@@ -50,7 +51,8 @@ const Login = () => {
           onChange={(e) => handleOnChange(e)}
         />
         <br />
-        <button onClick={(e) => handleLogin(e)}>Login</button>
+        <button onClick={(e) => handleLogin(e)}>Login</button> <br />
+        <Link to="/forgot-password">Forgot password</Link>
       </form>
     </div>
   );

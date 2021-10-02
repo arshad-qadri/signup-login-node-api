@@ -1,5 +1,5 @@
 // const { where } = require("sequelize/types");
-const { getJWTToken } = require("../helper/jwt");
+const { getJWTToken, decodeToken } = require("../helper/jwt");
 const { mail } = require("../helper/nodemailer");
 const db = require("../models");
 const User = db.users;
@@ -99,21 +99,26 @@ exports.resetPassword = async (req, res) => {
 
 exports.forgotPassword = async (req, res) => {
   try {
-    let user = await User.findOne({ where: { id: req.body.id } });
+    let user = await User.findOne({ where: { username: req.body.username } });
     console.log(user);
 
+    const tokens = getJWTToken({ id: user.id, username: user.username });
+    const token = tokens.replace("Bearer", "");
     const { username } = user;
-    const token = getJWTToken({ id: user.id, username: user.username });
 
     if (username !== req.body.username) {
       return res.status(404).json({ message: "user not register" });
     } else if (user) {
-      const link = `http://localhost:3000/forgot-password?id=${user.id}token=${token}`;
+      const link = `http://localhost:3001/change-password/${user.id}/${token}`;
       console.log(link);
-      mail("infoqadribags@gmail.com", "pass", link);
+      mail("arshadqadri321@gmail.com", "pass", link);
       return res
         .status(200)
-        .json({ message: "password reset link has been sent" });
+        .json({
+          data: user,
+          token: token,
+          message: "password reset link has been sent",
+        });
     }
   } catch (err) {
     res.status(500).send({ message: err || "some error occured" });
