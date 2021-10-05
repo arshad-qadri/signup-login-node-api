@@ -8,7 +8,7 @@ exports.setup = (app) => {
     "/api",
     jwt({ algorithms: ["HS256"], secret: jwtSecret }).unless({
       path: [
-        "/api/user/",
+        "/api/user",
         "/api/user/login",
         "/api/user/create",
         "/api/user/resetPassword",

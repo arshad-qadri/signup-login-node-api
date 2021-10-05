@@ -5,7 +5,7 @@ exports.decodeToken = (token) => {
   return jwt.decode(token.replace("Bearer", ""));
 };
 exports.getJWTToken = (data) => {
-  const token = `Bearer${jwt.sign(data, jwtSecret, { expiresIn: "15m" })}`;
+  const token = `Bearer${jwt.sign(data, jwtSecret, { expiresIn: "1m" })}`;
   return token;
 };
 

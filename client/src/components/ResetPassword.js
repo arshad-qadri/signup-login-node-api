@@ -11,14 +11,11 @@ const ResetPassword = () => {
   const handleOnChange = (e) => {
     setPassword({ ...password, [e.target.name]: e.target.value });
   };
-  const set = (e) => {
-    setId(e.target.value);
-    console.log(e);
-  };
+
   useEffect(() => {
     const userId = parseInt(localStorage.getItem("user_id"));
     setId(userId);
-    console.log(userId);
+    // console.log(userId);
   }, []);
   const handleResetPassword = async (e) => {
     e.preventDefault();
@@ -29,8 +26,12 @@ const ResetPassword = () => {
         newPassword: password.newPassword,
       })
       .then((res) => {
-        console.log(res);
-        alert(res.data.message);
+        // console.log(res);
+        if (!res.data.data) {
+          alert(res.data.message);
+        } else {
+          alert(res.data.message);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -44,7 +45,7 @@ const ResetPassword = () => {
           <label htmlFor="old password"> Old Password</label> &nbsp;
           <input
             type="text"
-            placeholder="old passowrd"
+            placeholder="old password"
             value={password.oldPassword}
             name="oldPassword"
             onChange={(e) => {
@@ -55,7 +56,7 @@ const ResetPassword = () => {
           <label htmlFor="old password"> New Password</label> &nbsp;
           <input
             type="text"
-            placeholder="new passowrd"
+            placeholder="new password"
             value={password.newPassword}
             name="newPassword"
             onChange={(e) => {

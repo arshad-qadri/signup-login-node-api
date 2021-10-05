@@ -20,7 +20,9 @@ const Login = () => {
       .post("http://localhost:3000/api/user/login", login)
       .then((res) => {
         console.log("====", res);
-        if (res) {
+        if (!res) {
+          alert("username or password wrong");
+        } else {
           localStorage.setItem("user_id", res.data.data.id);
           localStorage.setItem("token", res.data.token);
           alert(res.data.message);
@@ -52,6 +54,7 @@ const Login = () => {
         />
         <br />
         <button onClick={(e) => handleLogin(e)}>Login</button> <br />
+        <Link to="/signup">Create your account</Link> <br />
         <Link to="/forgot-password">Forgot password</Link>
       </form>
     </div>

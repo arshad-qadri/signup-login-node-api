@@ -12,7 +12,7 @@ exports.mail = (email, subjectname, link) => {
   var mailOption = {
     from: "arshadqadri321@gmail.com",
     to: email,
-    subject: "Sending Email using Node.js",
+    subject: subjectname,
     text: link,
   };
   transport.sendMail(mailOption, (err, info) => {

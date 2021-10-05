@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 // import { useHistory } from "react-router";
 import { useHistory } from "react-router-dom";
@@ -15,10 +15,7 @@ const Signup = () => {
   const handleOnChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
-  //   useEffect(() => {
-  //     // //   console.log("state ==== ", data);
-  //     // console.log("router", router);
-  //   }, [data]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     await axios
@@ -27,7 +24,7 @@ const Signup = () => {
         console.log(res);
         alert(res.data.message);
         if (res) {
-          history.push("/");
+          history.push("/login");
         }
       })
       .catch((err) => {
