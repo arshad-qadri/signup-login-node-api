@@ -1,10 +1,13 @@
 const express = require("express");
 const cors = require("cors");
+const dotenv = require("dotenv");
 const app = express();
 
-const db = require("./models/index");
-const { setup } = require("./routes/index");
+const { errors } = require("celebrate");
 
+const db = require("./api/models/index");
+const { setup } = require("./api/routes/index");
+dotenv.config();
 db.sequelize.sync();
 
 // db.sequelize.sync({ force: true }).then(() => {
@@ -12,13 +15,14 @@ db.sequelize.sync();
 // });
 
 var corsoptions = {
-  origin: "http://localhost:3001",
+  origin: process.env.APP_URL,
 };
 app.use(cors(corsoptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// require("./routes/routes")(app);
+// require("./api/routes/routes")(app);
 setup(app);
+app.use(errors());
 
 app.get("/", (req, res) => {
   try {
@@ -34,7 +38,7 @@ app.get("/reset-password/:id", (req, res) => {
     console.log(err);
   }
 });
-
-app.listen(3000, () => {
-  console.log("server is running on port 3000 ");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`server is running on port ${PORT} `);
 });

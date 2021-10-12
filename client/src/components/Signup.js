@@ -18,6 +18,12 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // const reg = /^[0-9a-zA-Z@$#?!&]$/;
+    // if (data.password === reg.toString()) {
+    //   alert(
+    //     "Password at least one uppercase character,  one number and one special character '@ $ # ? ! &' minimum length 6 character "
+    //   );
+    // }
     await axios
       .post("http://localhost:3000/api/user/create", data)
       .then((res) => {

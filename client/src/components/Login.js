@@ -16,22 +16,27 @@ const Login = () => {
   };
   const handleLogin = async (e) => {
     e.preventDefault();
-    await axios
-      .post("http://localhost:3000/api/user/login", login)
-      .then((res) => {
-        console.log("====", res);
-        if (!res) {
-          alert("username or password wrong");
-        } else {
-          localStorage.setItem("user_id", res.data.data.id);
-          localStorage.setItem("token", res.data.token);
-          alert(res.data.message);
-          history.push("/");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+    if (!login.username || !login.password) {
+      alert("plz fill the all fields");
+    } else {
+      await axios
+        .post("http://localhost:3000/api/user/login", login)
+        .then((res) => {
+          console.log("====", res);
+          if (res) {
+            localStorage.setItem("token", res.data.data.token);
+            alert(res.data.message);
+            history.push("/");
+          }
+        })
+        .catch((error) => {
+          // console.log("err", error.response.data.message);
+          if (error) {
+            alert(error.response.data.message);
+          }
+        });
+    }
   };
   return (
     <div>

@@ -1,6 +1,6 @@
 // const user = require('./routes')
 const jwt = require("express-jwt");
-const { jwtSecret } = require("../helper/jwtSecret");
+const { jwtSecret } = require("../../helper/jwtSecret");
 const routes = require("./routes");
 
 exports.setup = (app) => {
@@ -11,7 +11,6 @@ exports.setup = (app) => {
         "/api/user",
         "/api/user/login",
         "/api/user/create",
-        "/api/user/resetPassword",
         "/api/user/forgotPassword",
         "/api/user/change-password/:id",
       ],
